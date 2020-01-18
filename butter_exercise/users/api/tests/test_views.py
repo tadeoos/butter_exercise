@@ -3,9 +3,6 @@ from rest_framework.reverse import reverse
 from butter_exercise.users.models import Agreement
 
 
-# pytest butter_exercise/users/api/tests -s
-
-
 @pytest.mark.django_db
 class TestAgreementViewSet:
 
