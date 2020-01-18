@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AgreementSerializer(serializers.ModelSerializer):
-    html = serializers.CharField(read_only=True, source='get_html')
+    html = serializers.CharField(read_only=True)
 
     class Meta:
         model = Agreement

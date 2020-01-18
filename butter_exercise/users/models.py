@@ -26,9 +26,10 @@ class Agreement(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(default=aware_today, help_text=_("The date agreement was signed"))
     data = JSONField(encoder=DjangoJSONEncoder, help_text=_("Data agreement was signed with"))
+    html = models.TextField()
 
     @staticmethod
-    def get_required_data_keys():
+    def get_required_data_keys() -> set:
         # this can be made much smarter during future development
         return {'first_name', 'last_name', 'street', 'post_code'}
 
@@ -50,7 +51,12 @@ class Agreement(models.Model):
         """
         return Template(template_string)
 
-    def get_html(self):
+    def save(self, *args, **kwargs):
+        if not self.html:
+            self.html = self._get_html()
+        return super().save(*args, **kwargs)
+
+    def _get_html(self) -> str:
         data = self.data.copy()
         data['date'] = self.date
         context = Context(data)
